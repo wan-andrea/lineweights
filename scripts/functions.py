@@ -101,7 +101,8 @@ def logisticRegression(X_train, X_test, y_train, y_test, labels_le):
    
     # make predictions 
     y_pred = model.predict(X_test)
-    y_pred_lst = predictionsToLst(X_test, y_pred, labels_le)
+    lst = predictionsToLst(X_test, labels_le)
+    y_pred_lst = lst[1]
 
     # prints the predictions and actual
     print("Predicted: ", y_pred_lst, "\n")
