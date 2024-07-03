@@ -106,7 +106,7 @@ def logisticRegression(X_train, X_test, y_train, y_test, labels_le):
 
     # prints the predictions and actual
     print("Predicted: ", y_pred_lst, "\n")
-    print("Actual", y_test, "\n") # actual
+    print("Actual: ", y_test, "\n") # actual
 
     # pickle and save the rids and labels for return to Rhino
     path = input("Enter file path: \n")
