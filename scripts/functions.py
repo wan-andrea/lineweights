@@ -124,8 +124,8 @@ def logisticRegression(X_train, X_test, y_train, y_test, labels_le):
     y_pred_lst = lst[1]
 
     # prints the predictions and actual
-    print("Predicted: ", y_pred_lst, "\n")
-    print("Actual: ", y_test, "\n") # actual
+    # print("Predicted: ", y_pred_lst, "\n")
+    # print("Actual: ", y_test, "\n") # actual
 
     evaluate(model, X_test, y_test)
 
@@ -149,8 +149,8 @@ def decisionTrees(X_train, X_test, y_train, y_test, labels_le):
     y_pred_lst = lst[1]
 
     # prints the predictions and actual
-    print("Predicted: ", y_pred_lst, "\n")
-    print("Actual", y_test, "\n") # actual
+    # print("Predicted: ", y_pred_lst, "\n")
+    # print("Actual", y_test, "\n") # actual
 
     evaluate(model, X_test, y_test)
 
