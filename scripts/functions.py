@@ -158,3 +158,77 @@ def decisionTrees(X_train, X_test, y_train, y_test, labels_le):
     path = input("Enter file path: \n")
     name = input("Enter file name: \n")
     return toGrasshopper(path, name, lst)
+
+def makeAllData():
+    all_files = os.listdir("pkl_data")
+
+    data_lst = []
+
+    # initalize values
+    labels_str = []
+    crv_type_str = []
+    crv_closed = []
+    crv_deg = []
+    crv_def = []
+    crv_per = []
+    crv_span = []
+    crv_ctrl = []
+    crv_dist = []
+    crv_norm = []
+    crv_zbuff = []
+    crv_rid_str = [] 
+    crv_ind = []
+    draw_nums = []
+
+    for i in range(len(all_files)):
+        fileLocation = all_files[i]
+        data_item = pklToLst(fileLocation)
+        data_lst.append(data_item) # [data for drawing1, data for drawing2, etc.]
+
+        draw_nums += [os.path.basename(fileLocation)] * len(data_item[0]) # the number of curves in any given drawing
+
+        labels_str = data_item[0] # a list of strs
+        crv_type_str = data_item[1] # a list of strs
+        crv_closed = data_item[2] # ints 0 or 1 representing bools
+        crv_deg += data_item[3] # int
+        crv_def += data_item[4] # int
+        crv_per += data_item[5] # int
+        crv_span += data_item[6] # int
+        crv_ctrl += data_item[7] # int
+        crv_dist += data_item[8] # int
+        crv_norm += data_item[9] # color as int
+        crv_zbuff += data_item[10] # value as int
+        crv_rid_str += data_item[11] # id in rhino as str
+        crv_ind += data_item[12] # index as int
+
+    # convert non-ints to int
+    labels_le = LabelEncoder()
+    labels = labels_le.fit_transform(labels_str)
+
+    crv_type_le = LabelEncoder()
+    crv_type = crv_type_le.fit_transform(crv_type_str)
+
+    crv_rid_le = LabelEncoder()
+    crv_rid = crv_rid_str.fit_transform(crv_rid_le)
+
+    # make dataframe
+    features = pd.DataFrame({
+    'crv_type_int': crv_type,
+    'crv_closed': crv_closed,
+    'crv_deg': crv_deg,
+    'crv_def': crv_def,
+    'crv_per': crv_per,
+    'crv_span': crv_span,
+    'crv_ctrl': crv_ctrl,
+    'crv_dist': crv_dist,
+    'crv_norm': crv_norm,
+    'crv_zbuff': crv_zbuff,
+    'crv_ind': crv_ind
+    })
+
+    features.set_index('crv_ind', inplace=True) # sets rhino id as id
+
+    # make target
+    target = np.array(labels)
+
+    return [features, target, labels_le, draw_nums] # features = X, target = y, label encoder, and array of drawing numbers]
