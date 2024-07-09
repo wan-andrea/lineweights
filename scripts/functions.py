@@ -87,7 +87,7 @@ def splitDataset(X, y, test_size):
 # split which ensures all curves of a drawing are in only one dataset
 # draw_nums is an array of the drawing number each curve belongs to
 def splitDatasetByDrawing(X, y, test_size, draw_nums):
-    gs = GroupShuffleSplit(n_splits = 2, test_size)
+    gs = GroupShuffleSplit(n_splits = 2, test_size = test_size)
     train_ix, test_ix = next(gs.split(X, y, groups=draw_nums))
     X_train = X.loc[train_ix]
     X_test = X.loc[test_ix]
