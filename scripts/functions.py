@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn import tree
 from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import GroupShuffleSplit 
 
 # function to open files and store as data
 # Inputs: file location as str
@@ -71,6 +72,8 @@ def makeData(data):
 def splitDataset(X, y, test_size):
     # split the dataset
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size)
+
+# split which ensures all curves of a drawing are in only one dataset
 
 # helper function for different models
 # predictions to list 
