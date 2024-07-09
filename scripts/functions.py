@@ -87,12 +87,8 @@ def splitDataset(X, y, test_size):
 # split which ensures all curves of a drawing are in only one dataset
 # draw_nums is an array of the drawing number each curve belongs to
 def splitDatasetByDrawing(X, y, test_size, draw_nums):
-    gs = GroupShuffleSplit(n_splits = 2, test_size = test_size)
-    train_ix, test_ix = next(gs.split(X, y, groups=draw_nums))
-    X_train = X.loc[train_ix]
-    X_test = X.loc[test_ix]
-    y_train = y.loc[train_ix]
-    y_test = y.loc[test_ix]
+    train_inds, test_inds = next(GroupShuffleSplit().split(X, groups=draw_nums)) 
+    X_train, X_test, y_train, y_test = X.iloc[train_inds], X.iloc[test_inds], y[train_inds], y[test_inds]
     return [X_train, X_test, y_train, y_test]
 
 # helper function for different models
@@ -120,16 +116,18 @@ def toGrasshopper(path, name, lst):
 def logisticRegression(X_train, X_test, y_train, y_test, labels_le):
 
     # make the model
-    model = LogisticRegression().fit(X_train, y_train)
+    model = LogisticRegression(solver='liblinear').fit(X_train, y_train)
    
     # make predictions 
     y_pred = model.predict(X_test)
-    lst = predictionsToLst(X_test, labels_le)
+    lst = predictionsToLst(X_test, y_pred, labels_le)
     y_pred_lst = lst[1]
 
     # prints the predictions and actual
     print("Predicted: ", y_pred_lst, "\n")
     print("Actual: ", y_test, "\n") # actual
+
+    evaluate(model, X_test, y_test)
 
     # pickle and save the rids and labels for return to Rhino
     path = input("Enter file path: \n")
@@ -182,14 +180,14 @@ def makeAllData():
 
     for i in range(len(all_files)):
         fileLocation = all_files[i]
-        data_item = pklToLst(fileLocation)
+        data_item = pklToLst("pkl_data\\" + fileLocation)
         data_lst.append(data_item) # [data for drawing1, data for drawing2, etc.]
 
-        draw_nums += [os.path.basename(fileLocation)] * len(data_item[0]) # the number of curves in any given drawing
+        draw_nums += [int(os.path.basename(fileLocation)[:-4])] * len(data_item[0]) # the number of curves in any given drawing
 
-        labels_str = data_item[0] # a list of strs
-        crv_type_str = data_item[1] # a list of strs
-        crv_closed = data_item[2] # ints 0 or 1 representing bools
+        labels_str += data_item[0] # a list of strs
+        crv_type_str += data_item[1] # a list of strs
+        crv_closed += data_item[2] # ints 0 or 1 representing bools
         crv_deg += data_item[3] # int
         crv_def += data_item[4] # int
         crv_per += data_item[5] # int
@@ -209,8 +207,8 @@ def makeAllData():
     crv_type = crv_type_le.fit_transform(crv_type_str)
 
     crv_rid_le = LabelEncoder()
-    crv_rid = crv_rid_str.fit_transform(crv_rid_le)
-
+    crv_rid = crv_rid_le.fit_transform(crv_rid_str)
+    
     # make dataframe
     features = pd.DataFrame({
     'crv_type_int': crv_type,
@@ -223,7 +221,8 @@ def makeAllData():
     'crv_dist': crv_dist,
     'crv_norm': crv_norm,
     'crv_zbuff': crv_zbuff,
-    'crv_ind': crv_ind
+    'crv_ind': crv_ind,
+    'draw_nums': draw_nums
     })
 
     features.set_index('crv_ind', inplace=True) # sets rhino id as id
@@ -232,3 +231,9 @@ def makeAllData():
     target = np.array(labels)
 
     return [features, target, labels_le, draw_nums] # features = X, target = y, label encoder, and array of drawing numbers]
+
+# function to evaluate score metrics
+def evaluate(model, X_test, y_test):
+    accuracy = model.score(X_test, y_test)
+    print("The accuracy is: ", accuracy)
+    return None
