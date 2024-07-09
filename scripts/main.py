@@ -30,8 +30,13 @@ print("Splitting the dataset...\n")
 
 print("...done!\n")
 
-print("Running logistic regression...\n")
+# print("Running logistic regression...\n")
 
-lr_file = logisticRegression(X_train, X_test, y_train, y_test, labels_le)
+# lr_file = logisticRegression(X_train, X_test, # y_train, y_test, labels_le)
 
-print("The file can be found at: ", lr_file)
+# print("The file can be found at: ", lr_file)
+
+print("Running decision trees...\n")
+dt_file = decisionTrees(X_train, X_test, y_train, y_test, labels_le)
+
+print("The file can be found at: ", dt_file)

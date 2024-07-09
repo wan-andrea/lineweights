@@ -31,14 +31,14 @@ def makeData(fileLocation, data):
     labels_str = data[0] # a list of strs
     crv_type_str = data[1] # a list of strs
     crv_closed = data[2] # ints 0 or 1 representing bools
-    crv_deg = data[3] # int
-    crv_def = data[4] # int
-    crv_per = data[5] # int
-    crv_span = data[6] # int
-    crv_ctrl = data[7] # int
-    crv_dist = data[8] # int
+    # crv_deg = data[3] # int
+    # crv_def = data[4] # int
+    # crv_per = data[5] # int
+    # crv_span = data[6] # int
+    # crv_ctrl = data[7] # int
+    # crv_dist = data[8] # int
     crv_norm = data[9] # color as int
-    crv_zbuff = data[10] # value as int
+    # crv_zbuff = data[10] # value as int
     crv_rid_str = data[11] # id in rhino as str
     crv_ind = data[12] # index as int
 
@@ -60,14 +60,14 @@ def makeData(fileLocation, data):
     features = pd.DataFrame({
     'crv_type_int': crv_type,
     'crv_closed': crv_closed,
-    'crv_deg': crv_deg,
-    'crv_def': crv_def,
-    'crv_per': crv_per,
-    'crv_span': crv_span,
-    'crv_ctrl': crv_ctrl,
-    'crv_dist': crv_dist,
+    # 'crv_deg': crv_deg,
+    # 'crv_def': crv_def,
+    # 'crv_per': crv_per,
+    # 'crv_span': crv_span,
+    # 'crv_ctrl': crv_ctrl,
+    # 'crv_dist': crv_dist,
     'crv_norm': crv_norm,
-    'crv_zbuff': crv_zbuff,
+    # 'crv_zbuff': crv_zbuff,
     'crv_ind': crv_ind
     })
     
@@ -116,7 +116,7 @@ def toGrasshopper(path, name, lst):
 def logisticRegression(X_train, X_test, y_train, y_test, labels_le):
 
     # make the model
-    model = LogisticRegression(solver='liblinear').fit(X_train, y_train)
+    model = LogisticRegression(solver='lbfgs').fit(X_train, y_train)
    
     # make predictions 
     y_pred = model.predict(X_test)
@@ -145,12 +145,14 @@ def decisionTrees(X_train, X_test, y_train, y_test, labels_le):
 
     # make predictions
     y_pred = model.predict(X_test)
-    lst = predictionsToLst(X_test, labels_le)
+    lst = predictionsToLst(X_test, y_pred, labels_le)
     y_pred_lst = lst[1]
 
     # prints the predictions and actual
     print("Predicted: ", y_pred_lst, "\n")
     print("Actual", y_test, "\n") # actual
+
+    evaluate(model, X_test, y_test)
 
     # pickle and save the rids and labels for return to Rhino
     path = input("Enter file path: \n")
@@ -166,14 +168,14 @@ def makeAllData():
     labels_str = []
     crv_type_str = []
     crv_closed = []
-    crv_deg = []
-    crv_def = []
-    crv_per = []
-    crv_span = []
-    crv_ctrl = []
-    crv_dist = []
+    # crv_deg = []
+    # crv_def = []
+    # crv_per = []
+    # crv_span = []
+    # crv_ctrl = []
+    # crv_dist = []
     crv_norm = []
-    crv_zbuff = []
+    # crv_zbuff = []
     crv_rid_str = [] 
     crv_ind = []
     draw_nums = []
@@ -188,14 +190,14 @@ def makeAllData():
         labels_str += data_item[0] # a list of strs
         crv_type_str += data_item[1] # a list of strs
         crv_closed += data_item[2] # ints 0 or 1 representing bools
-        crv_deg += data_item[3] # int
-        crv_def += data_item[4] # int
-        crv_per += data_item[5] # int
-        crv_span += data_item[6] # int
-        crv_ctrl += data_item[7] # int
-        crv_dist += data_item[8] # int
+        # crv_deg += data_item[3] # int
+        # crv_def += data_item[4] # int
+        # crv_per += data_item[5] # int
+        # crv_span += data_item[6] # int
+        # crv_ctrl += data_item[7] # int
+        # crv_dist += data_item[8] # int
         crv_norm += data_item[9] # color as int
-        crv_zbuff += data_item[10] # value as int
+        # crv_zbuff += data_item[10] # value as int
         crv_rid_str += data_item[11] # id in rhino as str
         crv_ind += data_item[12] # index as int
 
@@ -213,14 +215,14 @@ def makeAllData():
     features = pd.DataFrame({
     'crv_type_int': crv_type,
     'crv_closed': crv_closed,
-    'crv_deg': crv_deg,
-    'crv_def': crv_def,
-    'crv_per': crv_per,
-    'crv_span': crv_span,
-    'crv_ctrl': crv_ctrl,
-    'crv_dist': crv_dist,
+    # 'crv_deg': crv_deg,
+    # 'crv_def': crv_def,
+    # 'crv_per': crv_per,
+    # 'crv_span': crv_span,
+    # 'crv_ctrl': crv_ctrl,
+    # 'crv_dist': crv_dist,
     'crv_norm': crv_norm,
-    'crv_zbuff': crv_zbuff,
+    # 'crv_zbuff': crv_zbuff,
     'crv_ind': crv_ind,
     'draw_nums': draw_nums
     })
