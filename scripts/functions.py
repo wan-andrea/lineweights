@@ -7,6 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn import tree
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import GroupShuffleSplit 
+import os
 
 # function to open files and store as data
 # Inputs: file location as str
@@ -17,11 +18,16 @@ def pklToLst(fileLocation):
         data = pickle.load(filein)
     return data
 
+# function to make array of drawing numbers - helper, combined with makeData
+def drawingArray(fileLocation, numCurves):
+    draw_nums = [os.path.basename(fileLocation)] * numCurves
+    return draw_nums
+
 # function to convert non-int inputs to ints
 # Inputs: data as 2D list
 # Outputs: a list with elements: features as pandas dataframe with int-only values, target as np array, all the label encoders
 
-def makeData(data):
+def makeData(fileLocation, data):
     labels_str = data[0] # a list of strs
     crv_type_str = data[1] # a list of strs
     crv_closed = data[2] # ints 0 or 1 representing bools
@@ -35,6 +41,10 @@ def makeData(data):
     crv_zbuff = data[10] # value as int
     crv_rid_str = data[11] # id in rhino as str
     crv_ind = data[12] # index as int
+
+    numCurves = len(crv_deg)
+
+    draw_nums = drawingArray(fileLocation, numCurves)
 
     # convert non-ints to int
     labels_le = LabelEncoder()
@@ -66,7 +76,7 @@ def makeData(data):
     # make target
     target = np.array(labels)
 
-    return [features, target, labels_le] # features = X, target = y
+    return [features, target, labels_le, draw_nums] # features = X, target = y, label encoder, and array of drawing numbers
 
 # train_test_split wrapper
 def splitDataset(X, y, test_size):
