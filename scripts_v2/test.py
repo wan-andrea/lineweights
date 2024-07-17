@@ -52,7 +52,7 @@ def saveImg(img, name):
 img_path = "C:\\Users\\andre\\Documents\\lineweights\\scripts_v2\\normal.jpg"
 for i in range(len(rid_lst)):
     img = cropImg(img_path, x1_lst[i], y1_lst[i], x2_lst[i], y2_lst[i])
-    img = padImg(img, img.width, img.height)
+    img = padImg(img, img.width, img.height) # CHANGE THIS TO DESIRED
     name = os.path.basename(img_path[:-4])
     # C:\\Users\\andre\\Documents\\lineweights\\scripts_v2\\normal_CRVDINDEX_RID
     name = name + "_" + str(i) + "_" + rid_lst[i] + ".jpg"
