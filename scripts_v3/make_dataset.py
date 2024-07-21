@@ -13,7 +13,8 @@ for filename in filenames:
     draw_num = os.path.basename(filename)[:-4]
     data = pklToLst(filename)
     normal_img = parent_folder + "\\" + "normal" + "_" + str(draw_num) + ".jpg"
-    labels_imgs.append(makeCroppedImgs(normal_img, 2250, 330, data, draw_num))
+    # if the image is just white or black, raise an error
+    labels_imgs.append(makeCroppedImgs(normal_img, 2250, 3300, data))
 
 
 """

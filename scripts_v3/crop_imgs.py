@@ -34,14 +34,14 @@ def cropImg(img_path, x1, y1, x2, y2):
     if new.width == 0 or new.height == 0:
         if new.width == 0:
             if x1 == x2 & x1 >= 0:
-                x1 = x1 - 1
+                x1 = x1 - 20
             elif x1 == x2 & x2 <= 2250:
-                x2 = x2 + 1
+                x2 = x2 + 20
         if new.height == 0:
             if y1 == y2 & y1 <= 3330:
-                y1 = y1 + 1
+                y1 = y1 + 20
             elif y1 == y2 & y2 >= 0:
-                y2 = y2 - 1
+                y2 = y2 - 20
         new = img.crop((x1, height - y1, x2, height - y2))
     # print(f"The new image size is: {new.width} x {new.height}")
     return new
@@ -73,9 +73,18 @@ def makeLWFolders(parent_dir):
         os.makedirs(cut)
 # Iterate through all the bounding boxes
 
+"""# Utility to check if images are aligned properly. If so, the image should never be just white and black
+# utility function
+def is_color_image(img):
+    colors = img.getcolors()
+    if colors == None or len(colors) > 2:
+        return True
+    else:
+        return False"""
+
 # Inputs: image path of the normal map, new_width (usually 2250), new_height (usually 3330)
 # Outputs: a dictionary with file path as key, and label lineweight as value
-def makeCroppedImgs(img_path, new_width, new_height, data, draw_num):
+def makeCroppedImgs(img_path, new_width, new_height, data):
     cropped_imgs = {}
     x1_lst = data[0]
     y1_lst = data[1]
@@ -89,17 +98,20 @@ def makeCroppedImgs(img_path, new_width, new_height, data, draw_num):
         # UTILITY check image
         # pad the borders with black
         img = padImg(img, new_width, new_height)
+        """if not is_color_image(img):
+            raise Exception("The alignment on is wrong.")"""
         # this is the parent folder
         save_path = img_path.rsplit('\\', 1)[0]
         # make folders if they don't exist
         makeLWFolders(save_path)
         name = os.path.basename(img_path[:-4])
         # name = "normal", str(i) = curve #, rid_lst[i] = rhino id of the curve
-        name = save_path + "\\" + lw_lst[i] + "\\" + name + "_" + str(draw_num) + "_" + str(i) + "_" + rid_lst[i] + ".jpg"
+        name = save_path + "\\" + lw_lst[i] + "\\" + name + "_" + "C" + str(i) + "_" + rid_lst[i] + ".jpg"
         # print(name)
+        
         saveImg(img, name)
         cropped_imgs[name] = lw_lst[i]
     return cropped_imgs
 
-test_data = pklToLst("C:\\Users\\andre\\Documents\\lineweights\\processed_data\\0.pkl")
-fin = makeCroppedImgs("C:\\Users\\andre\\Documents\\lineweights\\processed_data\\normal_0.jpg", 2250, 3300, test_data, 34)
+test_data = pklToLst("C:\\Users\\andre\\Documents\\lineweights\\processed_data\\7.pkl")
+fin = makeCroppedImgs("C:\\Users\\andre\\Documents\\lineweights\\processed_data\\normal_7.jpg", 2250, 3300, test_data)
