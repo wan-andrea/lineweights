@@ -113,5 +113,5 @@ def makeCroppedImgs(img_path, new_width, new_height, data):
         cropped_imgs[name] = lw_lst[i]
     return cropped_imgs
 
-test_data = pklToLst("C:\\Users\\andre\\Documents\\lineweights\\processed_data\\7.pkl")
-fin = makeCroppedImgs("C:\\Users\\andre\\Documents\\lineweights\\processed_data\\normal_7.jpg", 2250, 3300, test_data)
+test_data = pklToLst("C:\\Users\\andre\\Documents\\lineweights\\processed_data\\26.pkl")
+fin = makeCroppedImgs("C:\\Users\\andre\\Documents\\lineweights\\processed_data\\normal_26.jpg", 2250, 3300, test_data)
