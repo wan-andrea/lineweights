@@ -97,7 +97,7 @@ def makeCroppedImgs(img_path, new_width, new_height, data):
         img = cropImg(img_path, x1_lst[i], y1_lst[i], x2_lst[i], y2_lst[i])
         # UTILITY check image
         # pad the borders with black
-        img = padImg(img, new_width, new_height)
+        # img = padImg(img, new_width, new_height)
         """if not is_color_image(img):
             raise Exception("The alignment on is wrong.")"""
         # this is the parent folder
@@ -113,5 +113,5 @@ def makeCroppedImgs(img_path, new_width, new_height, data):
         cropped_imgs[name] = lw_lst[i]
     return cropped_imgs
 
-test_data = pklToLst("C:\\Users\\andre\\Documents\\lineweights\\processed_data\\26.pkl")
-fin = makeCroppedImgs("C:\\Users\\andre\\Documents\\lineweights\\processed_data\\normal_26.jpg", 2250, 3300, test_data)
+# test_data = pklToLst("C:\\Users\\andre\\Documents\\lineweights\\processed_data\\26.pkl")
+# fin = makeCroppedImgs("C:\\Users\\andre\\Documents\\lineweights\\processed_data\\normal_26.jpg", 2250, 3300, test_data)

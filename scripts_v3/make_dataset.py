@@ -1,7 +1,7 @@
 from crop_imgs import *
 import glob
 
-parent_folder = "C:\\Users\\andre\\Documents\\lineweights\\processed_data"
+parent_folder = "C:\\Users\\andre\\Documents\\lineweights\\uncropped_data"
 # a list containing dictionaries for each drawing
 labels_imgs = []
 

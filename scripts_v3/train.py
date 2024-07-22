@@ -27,7 +27,7 @@ transform = transforms.Compose([
 dataset = torchvision.datasets.ImageFolder(parent, transform)
 # data_loader = torch.utils.data.DataLoader(dataset, batch_size=32, shuffle=True)
 
-# print(dataset.classes)
+print(dataset.classes)
 
 train_size = int(0.8 * len(dataset)) # 80%
 test_size = len(dataset) - train_size #20%
